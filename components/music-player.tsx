@@ -11,8 +11,6 @@ import TrackPlayer, {
   useProgress,
 } from "react-native-track-player";
 
-const Placeholder = require("@/assets/images/icon.png");
-
 function MusicPlayer() {
   const progress = useProgress();
   const playBackState = usePlaybackState();
@@ -44,7 +42,14 @@ function MusicPlayer() {
     <SafeAreaView style={styles.mainContainer}>
       <View style={styles.container}>
         <View style={styles.songInfoContainer}>
-          <Image source={Placeholder} style={styles.imageWrapper} />
+          <Image
+            source={
+              activeTrack?.artwork
+                ? { uri: activeTrack.artwork }
+                : require("@/assets/images/icon.png")
+            }
+            style={styles.imageWrapper}
+          />
           <Text style={styles.songTitle} numberOfLines={1}>
             {activeTrack?.title ?? "No track selected"}
           </Text>
