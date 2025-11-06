@@ -16,6 +16,13 @@ const setupPlayer = async () => {
         Capability.SkipToNext,
         Capability.SkipToPrevious,
       ],
+      compactCapabilities: [Capability.Play, Capability.Pause],
+      notificationCapabilities: [
+        Capability.Play,
+        Capability.Pause,
+        Capability.SkipToNext,
+        Capability.SkipToPrevious,
+      ],
     });
 
     await TrackPlayer.add(podcasts);

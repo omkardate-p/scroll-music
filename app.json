@@ -26,8 +26,15 @@
       "predictiveBackGestureEnabled": false,
       "permissions": [
         "android.permission.RECORD_AUDIO",
-        "android.permission.MODIFY_AUDIO_SETTINGS"
-      ]
+        "android.permission.MODIFY_AUDIO_SETTINGS",
+        "android.permission.FOREGROUND_SERVICE",
+        "android.permission.WAKE_LOCK"
+      ],
+      "notification": {
+        "icon": "./assets/images/android-icon-monochrome.png",
+        "color": "#FFD369"
+      },
+      "package": "com.provue.scrollmusic"
     },
     "web": {
       "output": "static",
@@ -46,13 +53,13 @@
             "backgroundColor": "#000000"
           }
         }
-      ],
-      [
-        "expo-audio",
-        {
-          "microphonePermission": "Allow Scroll Music to access your microphone."
-        }
       ]
+      // [
+      //   "expo-audio",
+      //   {
+      //     "microphonePermission": "Allow Scroll Music to access your microphone."
+      //   }
+      // ]
     ],
     "experiments": {
       "typedRoutes": true,
