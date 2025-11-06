@@ -1,3 +1,5 @@
+import "@/styles/global.css";
+
 import { useSetupTrackPlayer } from "@/hooks/use-setup-track-player";
 import playbackService from "@/utils/playback.service";
 import { Stack } from "expo-router";

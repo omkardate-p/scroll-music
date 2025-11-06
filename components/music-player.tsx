@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Image, Text, TouchableOpacity, View } from "react-native";
 
 import Slider from "@react-native-community/slider";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -11,7 +11,7 @@ import TrackPlayer, {
   useProgress,
 } from "react-native-track-player";
 
-function MusicPlayer() {
+export default function MusicPlayer() {
   const progress = useProgress();
   const playBackState = usePlaybackState();
   const activeTrack = useActiveTrack();
@@ -39,28 +39,34 @@ function MusicPlayer() {
   };
 
   return (
-    <SafeAreaView style={styles.mainContainer}>
-      <View style={styles.container}>
-        <View style={styles.songInfoContainer}>
+    <SafeAreaView className="flex-1 bg-[#222831]">
+      <View className="flex-1 items-center justify-between px-6 pb-10 pt-10">
+        <View className="w-full flex-1 items-center justify-center pt-5">
           <Image
             source={
               activeTrack?.artwork
                 ? { uri: activeTrack.artwork }
                 : require("@/assets/images/icon.png")
             }
-            style={styles.imageWrapper}
+            className="mb-8 h-[280] w-[280] rounded-[20px] border-2 border-[#FFFFFF33] shadow-lg"
           />
-          <Text style={styles.songTitle} numberOfLines={1}>
+          <Text
+            className="mb-2 w-full px-5 text-center text-[22px] font-bold text-white"
+            numberOfLines={1}
+          >
             {activeTrack?.title ?? "No track selected"}
           </Text>
-          <Text style={styles.songArtist} numberOfLines={1}>
+          <Text
+            className="w-full px-5 text-center text-base font-normal text-[#FFFFFFB3]"
+            numberOfLines={1}
+          >
             {activeTrack?.preset ?? "—"}
           </Text>
         </View>
 
-        <View style={styles.progressContainer}>
+        <View className="my-8 w-full px-2">
           <Slider
-            style={styles.progressBar}
+            className="h-10 w-full"
             value={progress.position}
             minimumValue={0}
             maximumValue={progress.duration}
@@ -70,13 +76,13 @@ function MusicPlayer() {
             onSlidingComplete={onSlidingComplete}
           />
 
-          <View style={styles.progressLevelDuraiton}>
-            <Text style={styles.progressLabelText}>
+          <View className="mt-2 w-full flex-row justify-between px-1">
+            <Text className="text-xs font-medium text-[#FFFFFFCC]">
               {new Date(progress.position * 1000)
                 .toLocaleTimeString()
                 .substring(3)}
             </Text>
-            <Text style={styles.progressLabelText}>
+            <Text className="text-xs font-medium text-[#FFFFFFCC]">
               {new Date((progress.duration - progress.position) * 1000)
                 .toLocaleTimeString()
                 .substring(3)}
@@ -84,17 +90,17 @@ function MusicPlayer() {
           </View>
         </View>
 
-        <View style={styles.musicControlsContainer}>
+        <View className="w-full flex-row items-center justify-center gap-10 px-5">
           <TouchableOpacity
             onPress={previousTrack}
-            style={styles.controlButton}
+            className="p-2"
             activeOpacity={0.7}
           >
             <Ionicons name="play-back" size={35} color="#FFD369" />
           </TouchableOpacity>
           <TouchableOpacity
             onPress={togglePlayBack}
-            style={styles.controlButton}
+            className="p-2"
             activeOpacity={0.7}
           >
             <Ionicons
@@ -109,7 +115,7 @@ function MusicPlayer() {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={nextTrack}
-            style={styles.controlButton}
+            className="p-2"
             activeOpacity={0.7}
           >
             <Ionicons name="play-forward" size={35} color="#FFD369" />
@@ -119,92 +125,3 @@ function MusicPlayer() {
     </SafeAreaView>
   );
 }
-
-export default MusicPlayer;
-
-const styles = StyleSheet.create({
-  mainContainer: {
-    flex: 1,
-    backgroundColor: "#222831",
-  },
-  container: {
-    flex: 1,
-    paddingHorizontal: 24,
-    paddingTop: 40,
-    paddingBottom: 40,
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  songInfoContainer: {
-    alignItems: "center",
-    width: "100%",
-    flex: 1,
-    justifyContent: "center",
-    paddingTop: 20,
-  },
-  imageWrapper: {
-    width: 280,
-    height: 280,
-    borderRadius: 20,
-    borderWidth: 2,
-    borderColor: "#FFFFFF33",
-    marginBottom: 32,
-    shadowColor: "#000000",
-    shadowOffset: {
-      width: 0,
-      height: 8,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 12,
-    elevation: 8,
-  },
-  songTitle: {
-    fontSize: 22,
-    fontWeight: "700",
-    color: "#FFFFFF",
-    textAlign: "center",
-    marginBottom: 8,
-    paddingHorizontal: 20,
-    width: "100%",
-  },
-  songArtist: {
-    fontSize: 16,
-    fontWeight: "400",
-    color: "#FFFFFFB3",
-    textAlign: "center",
-    paddingHorizontal: 20,
-    width: "100%",
-  },
-  progressContainer: {
-    width: "100%",
-    paddingHorizontal: 8,
-    marginVertical: 32,
-  },
-  progressBar: {
-    width: "100%",
-    height: 40,
-  },
-  progressLevelDuraiton: {
-    width: "100%",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingHorizontal: 4,
-    marginTop: 8,
-  },
-  progressLabelText: {
-    color: "#FFFFFFCC",
-    fontSize: 12,
-    fontWeight: "500",
-  },
-  musicControlsContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    width: "100%",
-    paddingHorizontal: 20,
-    gap: 40,
-  },
-  controlButton: {
-    padding: 8,
-  },
-});

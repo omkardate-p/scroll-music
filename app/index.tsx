@@ -1,17 +1,10 @@
 import MusicPlayer from "@/components/music-player";
-import { StatusBar, StyleSheet, View } from "react-native";
+import { View } from "react-native";
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <StatusBar barStyle="light-content" />
+    <View className="flex-1">
       <MusicPlayer />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
