@@ -1,5 +1,5 @@
-import { Ionicons } from "@expo/vector-icons";
-import { useEffect } from "react";
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { useEffect, useState } from "react";
 import { AppState, Image, Text, TouchableOpacity, View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated from "react-native-reanimated";
@@ -20,6 +20,8 @@ export default function MusicPlayer() {
   const progress = useProgress();
   const playBackState = usePlaybackState();
   const activeTrack = useActiveTrack();
+
+  const [playbackSpeed, setPlaybackSpeed] = useState<number>(1);
 
   const togglePlayBack = async () => {
     if (playBackState.state === State.Playing) {
@@ -57,6 +59,28 @@ export default function MusicPlayer() {
 
   const seekForward10Seconds = async () => {
     await TrackPlayer.seekTo(progress.position + 10);
+  };
+
+  const changeSpeed = async () => {
+    const currentRate = await TrackPlayer.getRate();
+
+    switch (currentRate) {
+      case 0.5:
+        await TrackPlayer.setRate(1);
+        setPlaybackSpeed(1);
+        break;
+      case 1:
+        await TrackPlayer.setRate(1.5);
+        setPlaybackSpeed(1.5);
+        break;
+      case 1.5:
+        await TrackPlayer.setRate(2);
+        setPlaybackSpeed(2);
+        break;
+      default:
+        await TrackPlayer.setRate(0.5);
+        setPlaybackSpeed(0.5);
+    }
   };
 
   // Swipe gesture: left/up = next, right/down = previous
@@ -218,6 +242,24 @@ export default function MusicPlayer() {
               <Ionicons name="play-forward" size={36} color="#FFD369" />
             </TouchableOpacity>
           </View>
+
+          {/* Repeat track */}
+          <TouchableOpacity
+            onPress={changeSpeed}
+            className="p-2"
+            activeOpacity={0.7}
+          >
+            <View className="flex items-center gap-2">
+              <MaterialCommunityIcons
+                name="play-speed"
+                size={36}
+                color="#FFD369"
+              />
+              <Text className="text-xs font-medium text-[#FFD369]">
+                {playbackSpeed}x
+              </Text>
+            </View>
+          </TouchableOpacity>
         </Animated.View>
       </GestureDetector>
     </SafeAreaView>
