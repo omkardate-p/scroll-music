@@ -250,17 +250,21 @@ export default function MusicPlayer() {
               className="p-2"
               activeOpacity={0.7}
             >
-              {repeatMode === RepeatMode.Off ? (
-                <Ionicons name="repeat" size={36} color="#FFFFFF4D" />
-              ) : repeatMode === RepeatMode.Queue ? (
-                <Ionicons name="repeat" size={36} color="#FFD369" />
-              ) : (
+              {repeatMode === RepeatMode.Track ? (
                 <View className="relative items-center justify-center">
                   <Ionicons name="repeat" size={36} color="#FFD369" />
                   <Text className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-xs font-bold text-[#FFD369]">
                     1
                   </Text>
                 </View>
+              ) : (
+                <Ionicons
+                  name="repeat"
+                  size={36}
+                  color={
+                    repeatMode === RepeatMode.Queue ? "#FFD369" : "#FFFFFF4D"
+                  }
+                />
               )}
             </TouchableOpacity>
           </View>
