@@ -1,11 +1,7 @@
 import podcasts from "@/utils/audio";
 import { getSavedPlaybackState } from "@/utils/playback-storage";
 import { useEffect, useRef } from "react";
-import TrackPlayer, {
-  Capability,
-  RatingType,
-  RepeatMode,
-} from "react-native-track-player";
+import TrackPlayer, { Capability, RatingType } from "react-native-track-player";
 
 const setupPlayer = async () => {
   try {
@@ -40,18 +36,6 @@ const setupPlayer = async () => {
         podcasts.findIndex((audio) => audio.id === savedPlaybackState.id),
         savedPlaybackState.position,
       );
-
-      switch (savedPlaybackState.repeatMode) {
-        case RepeatMode.Queue:
-          await TrackPlayer.setRepeatMode(RepeatMode.Queue);
-          break;
-        case RepeatMode.Track:
-          await TrackPlayer.setRepeatMode(RepeatMode.Track);
-          break;
-        default:
-          await TrackPlayer.setRepeatMode(RepeatMode.Off);
-          break;
-      }
     } catch (error) {
       console.error("Error restoring playback:", error);
     }

@@ -1,18 +1,14 @@
 import { Ionicons } from "@expo/vector-icons";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect } from "react";
 import { AppState, Image, Text, TouchableOpacity, View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated from "react-native-reanimated";
 
 import { formatDuration } from "@/utils/format-duration";
-import {
-  getSavedPlaybackState,
-  savePlaybackState,
-} from "@/utils/playback-storage";
+import { savePlaybackState } from "@/utils/playback-storage";
 import Slider from "@react-native-community/slider";
 import { SafeAreaView } from "react-native-safe-area-context";
 import TrackPlayer, {
-  RepeatMode,
   State,
   useActiveTrack,
   usePlaybackState,
@@ -21,8 +17,6 @@ import TrackPlayer, {
 import { scheduleOnRN } from "react-native-worklets";
 
 export default function MusicPlayer() {
-  const [repeatMode, setRepeatMode] = useState<RepeatMode>(RepeatMode.Off);
-
   const progress = useProgress();
   const playBackState = usePlaybackState();
   const activeTrack = useActiveTrack();
@@ -57,25 +51,6 @@ export default function MusicPlayer() {
     await TrackPlayer.seekTo(value);
   };
 
-  const shuffleTracks = async () => {
-    console.log("shuffleTracks");
-  };
-
-  const repeatTracks = async () => {
-    const currentRepeatMode = await TrackPlayer.getRepeatMode();
-
-    if (currentRepeatMode === RepeatMode.Off) {
-      await TrackPlayer.setRepeatMode(RepeatMode.Queue);
-      setRepeatMode(RepeatMode.Queue);
-    } else if (currentRepeatMode === RepeatMode.Queue) {
-      await TrackPlayer.setRepeatMode(RepeatMode.Track);
-      setRepeatMode(RepeatMode.Track);
-    } else {
-      await TrackPlayer.setRepeatMode(RepeatMode.Off);
-      setRepeatMode(RepeatMode.Off);
-    }
-  };
-
   // Swipe gesture: left/up = next, right/down = previous
   const swipeGesture = Gesture.Pan()
     .activeOffsetX([-10, 10]) // Only activate when horizontal movement exceeds 10px
@@ -108,22 +83,6 @@ export default function MusicPlayer() {
       }
     });
 
-  const restoreRepeatMode = async () => {
-    const savedPlaybackState = await getSavedPlaybackState();
-    if (!savedPlaybackState) return;
-
-    try {
-      await TrackPlayer.setRepeatMode(savedPlaybackState.repeatMode);
-      setRepeatMode(savedPlaybackState.repeatMode);
-    } catch (error) {
-      console.error("Error restoring repeat mode:", error);
-    }
-  };
-
-  useLayoutEffect(() => {
-    restoreRepeatMode();
-  }, []);
-
   // Save progress when app is backgrounded
   useEffect(() => {
     const sub = AppState.addEventListener("change", (state) => {
@@ -131,7 +90,6 @@ export default function MusicPlayer() {
         savePlaybackState({
           id: activeTrack.id,
           position: progress.position,
-          repeatMode,
         });
       }
     });
@@ -140,7 +98,6 @@ export default function MusicPlayer() {
       savePlaybackState({
         id: activeTrack.id,
         position: progress.position,
-        repeatMode,
       });
     }
 
@@ -200,15 +157,6 @@ export default function MusicPlayer() {
 
           {/* Playback controls */}
           <View className="w-full flex-row items-center justify-center gap-4 px-5">
-            {/* Shuffle tracks */}
-            <TouchableOpacity
-              onPress={shuffleTracks}
-              className="p-2"
-              activeOpacity={0.7}
-            >
-              <Ionicons name="shuffle" size={36} color="#FFD369" />
-            </TouchableOpacity>
-
             {/* Previous track */}
             <TouchableOpacity
               onPress={previousTrack}
@@ -242,30 +190,6 @@ export default function MusicPlayer() {
               activeOpacity={0.7}
             >
               <Ionicons name="play-forward" size={36} color="#FFD369" />
-            </TouchableOpacity>
-
-            {/* Repeat tracks */}
-            <TouchableOpacity
-              onPress={repeatTracks}
-              className="p-2"
-              activeOpacity={0.7}
-            >
-              {repeatMode === RepeatMode.Track ? (
-                <View className="relative items-center justify-center">
-                  <Ionicons name="repeat" size={36} color="#FFD369" />
-                  <Text className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-xs font-bold text-[#FFD369]">
-                    1
-                  </Text>
-                </View>
-              ) : (
-                <Ionicons
-                  name="repeat"
-                  size={36}
-                  color={
-                    repeatMode === RepeatMode.Queue ? "#FFD369" : "#FFFFFF4D"
-                  }
-                />
-              )}
             </TouchableOpacity>
           </View>
         </Animated.View>
