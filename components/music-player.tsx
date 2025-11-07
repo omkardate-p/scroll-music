@@ -54,9 +54,6 @@ export default function MusicPlayer() {
     .activeOffsetX([-10, 10]) // Only activate when horizontal movement exceeds 10px
     .activeOffsetY([-10, 10]) // Only activate when vertical movement exceeds 10px
     .onEnd((event) => {
-      // check what is this, and why callback only work when it is in worklet, with `scheduleOnRN`
-      "worklet";
-
       const SWIPE_THRESHOLD = 100; // Minimum swipe distance
 
       // Determine primary direction (whichever has greater magnitude)
