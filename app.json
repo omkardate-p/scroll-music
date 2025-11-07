@@ -53,13 +53,20 @@
             "backgroundColor": "#000000"
           }
         }
-      ]
+      ],
       // [
       //   "expo-audio",
       //   {
       //     "microphonePermission": "Allow Scroll Music to access your microphone."
       //   }
       // ]
+      [
+        // for iCloud storage features
+        "expo-document-picker",
+        {
+          "iCloudContainerEnvironment": "Production"
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,
