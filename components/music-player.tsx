@@ -4,6 +4,7 @@ import { Image, Text, TouchableOpacity, View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated from "react-native-reanimated";
 
+import { formatDuration } from "@/utils/format-duration";
 import Slider from "@react-native-community/slider";
 import { SafeAreaView } from "react-native-safe-area-context";
 import TrackPlayer, {
@@ -122,14 +123,10 @@ export default function MusicPlayer() {
 
             <View className="mt-2 w-full flex-row justify-between px-1">
               <Text className="text-xs font-medium text-[#FFFFFFCC]">
-                {new Date(progress.position * 1000)
-                  .toLocaleTimeString()
-                  .substring(3)}
+                {formatDuration(progress.position)}
               </Text>
               <Text className="text-xs font-medium text-[#FFFFFFCC]">
-                {new Date((progress.duration - progress.position) * 1000)
-                  .toLocaleTimeString()
-                  .substring(3)}
+                {formatDuration(progress.duration)}
               </Text>
             </View>
           </View>
