@@ -1,4 +1,6 @@
-`echo "sdk.dir=$HOME/Library/Android/sdk" > android/local.properties`
+```
+echo "sdk.dir=$HOME/Library/Android/sdk" > android/local.properties
+```
 
 <!-- for pod -->
 
