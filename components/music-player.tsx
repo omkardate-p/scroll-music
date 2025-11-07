@@ -33,7 +33,6 @@ export default function MusicPlayer() {
       await TrackPlayer.play();
     } catch (error) {
       console.error("Error in nextTrack:", error);
-      // Silently fail if there's no next track
     }
   };
 
@@ -43,8 +42,11 @@ export default function MusicPlayer() {
       await TrackPlayer.play();
     } catch (error) {
       console.error("Error in previousTrack:", error);
-      // Silently fail if there's no previous track
     }
+  };
+
+  const onSlidingComplete = async (value: number) => {
+    await TrackPlayer.seekTo(value);
   };
 
   // Swipe gesture: left/up = next, right/down = previous
@@ -81,10 +83,6 @@ export default function MusicPlayer() {
         }
       }
     });
-
-  const onSlidingComplete = async (value: number) => {
-    await TrackPlayer.seekTo(value);
-  };
 
   return (
     <SafeAreaView className="flex-1 bg-[#222831]">
