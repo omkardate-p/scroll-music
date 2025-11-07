@@ -51,6 +51,14 @@ export default function MusicPlayer() {
     await TrackPlayer.seekTo(value);
   };
 
+  const seekBackward10Seconds = async () => {
+    await TrackPlayer.seekTo(progress.position - 10);
+  };
+
+  const seekForward10Seconds = async () => {
+    await TrackPlayer.seekTo(progress.position + 10);
+  };
+
   // Swipe gesture: left/up = next, right/down = previous
   const swipeGesture = Gesture.Pan()
     .activeOffsetX([-10, 10]) // Only activate when horizontal movement exceeds 10px
@@ -157,13 +165,22 @@ export default function MusicPlayer() {
 
           {/* Playback controls */}
           <View className="w-full flex-row items-center justify-center gap-4 px-5">
+            {/* Seek backward 10 seconds */}
+            <TouchableOpacity
+              onPress={seekBackward10Seconds}
+              className="p-2"
+              activeOpacity={0.7}
+            >
+              <Ionicons name="play-back" size={36} color="#FFD369" />
+            </TouchableOpacity>
+
             {/* Previous track */}
             <TouchableOpacity
               onPress={previousTrack}
               className="p-2"
               activeOpacity={0.7}
             >
-              <Ionicons name="play-back" size={36} color="#FFD369" />
+              <Ionicons name="play-skip-back" size={36} color="#FFD369" />
             </TouchableOpacity>
 
             {/* Play/pause */}
@@ -186,6 +203,15 @@ export default function MusicPlayer() {
             {/* Next track */}
             <TouchableOpacity
               onPress={nextTrack}
+              className="p-2"
+              activeOpacity={0.7}
+            >
+              <Ionicons name="play-skip-forward" size={36} color="#FFD369" />
+            </TouchableOpacity>
+
+            {/* Seek forward 10 seconds */}
+            <TouchableOpacity
+              onPress={seekForward10Seconds}
               className="p-2"
               activeOpacity={0.7}
             >
