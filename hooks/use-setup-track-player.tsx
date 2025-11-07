@@ -1,4 +1,5 @@
 import podcasts from "@/utils/audio";
+import { getSavedPlaybackState } from "@/utils/playback-storage";
 import { useEffect, useRef } from "react";
 import TrackPlayer, { Capability, RatingType } from "react-native-track-player";
 
@@ -26,8 +27,20 @@ const setupPlayer = async () => {
     });
 
     await TrackPlayer.add(podcasts);
+
+    const saved = await getSavedPlaybackState();
+    if (!saved) return;
+
+    try {
+      await TrackPlayer.skip(
+        podcasts.findIndex((audio) => audio.id === saved.id),
+        saved.position,
+      );
+    } catch (error) {
+      console.error("Error restoring playback:", error);
+    }
   } catch (error) {
-    console.error(error);
+    console.error("Error setting up player:", error);
   }
 };
 

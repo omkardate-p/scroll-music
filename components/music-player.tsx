@@ -1,10 +1,11 @@
 import { Ionicons } from "@expo/vector-icons";
-import React from "react";
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import { useEffect } from "react";
+import { AppState, Image, Text, TouchableOpacity, View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated from "react-native-reanimated";
 
 import { formatDuration } from "@/utils/format-duration";
+import { savePlaybackState } from "@/utils/playback-storage";
 import Slider from "@react-native-community/slider";
 import { SafeAreaView } from "react-native-safe-area-context";
 import TrackPlayer, {
@@ -81,6 +82,36 @@ export default function MusicPlayer() {
         }
       }
     });
+
+  // Save progress when app is backgrounded
+  useEffect(() => {
+    const sub = AppState.addEventListener("change", (state) => {
+      if (state === "background" && activeTrack) {
+        savePlaybackState({
+          id: activeTrack.id,
+          position: progress.position,
+        });
+      }
+    });
+
+    return () => {
+      sub.remove();
+    };
+  }, [activeTrack, progress.position]);
+
+  // Save progress when playback starts
+  useEffect(() => {
+    if (
+      playBackState.state === State.Playing &&
+      activeTrack &&
+      progress.position > 0
+    ) {
+      savePlaybackState({
+        id: activeTrack.id,
+        position: progress.position,
+      });
+    }
+  }, [playBackState]);
 
   return (
     <SafeAreaView className="flex-1 bg-[#222831]">
