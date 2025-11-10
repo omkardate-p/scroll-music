@@ -30,10 +30,6 @@
         "android.permission.FOREGROUND_SERVICE",
         "android.permission.WAKE_LOCK"
       ],
-      "notification": {
-        "icon": "./assets/images/android-icon-monochrome.png",
-        "color": "#FFD369"
-      },
       "package": "com.provue.scrollmusic"
     },
     "web": {

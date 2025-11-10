@@ -10,3 +10,11 @@ rm -rf Pods Podfile.lock
 pod cache clean --all
 pod install
 ```
+
+```
+npx expo-doctor
+```
+
+```
+npx expo install --check
+```
